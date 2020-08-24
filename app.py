@@ -104,7 +104,7 @@ def updateDevice():
         txtDeviceID = data["DeviceID"]
         nDeviceID = int(txtDeviceID)
         if p.UpdateDeviceInfoToDB(nDeviceID, txtDeviceName, txtDeviceSerialNo, txtDeviceDesc, txtDeviceLocation,
-                                  txtServerIP, int(txtServerPort), fTimeout) == True:
+                                  txtServerIP, int(txtServerPort), fTimeout):
             print('Update device info sucessfully')
         else:
             print("Update device info failed")
@@ -293,4 +293,4 @@ def deleteField():
 
 if __name__ == '__main__':
     # app.run(debug=True)
-    app.run(host='localhost', port=5050)
+    app.run(host='localhost', port=5000)

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="ca56128d-84a1-438e-9686-fec20bcff2bf" name="EQAP">
+        <fileTransfer rootFolder="/home/EQAPWeb" accessType="SFTP" host="192.168.8.1" port="22" sshConfigId="80fc1282-f98d-4634-a491-3eadb0402b40" sshConfig="root@192.168.8.1:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
