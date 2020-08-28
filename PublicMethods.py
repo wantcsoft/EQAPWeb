@@ -8,7 +8,7 @@ from Models.SysConfigInfo import SysConfigInfo
 
 
 class PublicMethods:
-    def __init__(self,strDBFilePath):
+    def __init__(self, strDBFilePath):
         self.DBFileName = strDBFilePath
 
     def GetSystemConfig(self):
@@ -23,7 +23,7 @@ class PublicMethods:
         else:
             return SysConfigInfo(result[0], result[1], result[2], result[3], result[4], result[5])
 
-    def UpdateSysConfig(self,nSaveLog,nTerminalID,nTimeSequence,nRetryTims,nDataKeptDays,dtLastCleanDate):
+    def UpdateSysConfig(self, nSaveLog,nTerminalID,nTimeSequence,nRetryTims,nDataKeptDays,dtLastCleanDate):
         sqlCmdTxt = "UPDATE BSC_SysConfig SET SaveLog = {}, TerminalID = {}, TimeSequence = {}, RetryTims = {},DataKeptDays={},LastDataCleanDate='{}'".format(nSaveLog,nTerminalID,nTimeSequence,nRetryTims,nDataKeptDays,dtLastCleanDate)
         conn = sqlite3.connect(self.DBFileName)
         conn.execute(sqlCmdTxt)

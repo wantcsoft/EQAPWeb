@@ -7,8 +7,8 @@ from flask import Flask
 from flask_cors import *
 from PublicMethods import PublicMethods
 
-p = PublicMethods('./DB/Eqap.DB')
-# p = PublicMethods('../EQAP/DB/Eqap.DB')
+# p = PublicMethods('./DB/Eqap.DB')
+p = PublicMethods('/home/projects/EQAP/DB/Eqap.DB')
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -293,4 +293,4 @@ def deleteField():
 
 if __name__ == '__main__':
     # app.run(debug=True)
-    app.run(host='localhost', port=5000)
+    app.run(host='0.0.0.0', port=5000)
