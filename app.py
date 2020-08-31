@@ -8,7 +8,7 @@ from flask_cors import *
 from PublicMethods import PublicMethods
 
 # p = PublicMethods('./DB/Eqap.DB')
-p = PublicMethods('/home/projects/EQAP/DB/Eqap.DB')
+p = PublicMethods('/home/EQAP/DB/Eqap.DB')
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
