@@ -7,8 +7,9 @@ from flask import Flask
 from flask_cors import *
 from PublicMethods import PublicMethods
 
+p = PublicMethods('../EQAP/DB/Eqap.DB')
 # p = PublicMethods('./DB/Eqap.DB')
-p = PublicMethods('/home/EQAP/DB/Eqap.DB')
+# p = PublicMethods('/home/projects/EQAP/DB/Eqap.DB')
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -31,6 +32,13 @@ def getSystemSetup():
 def getDeviceSetup():
     device = p.GetDeviceInfoFromDB()
     return device.toJson()
+
+
+# 获取仪器配置信息
+@app.route('/getInstrumentSetup')
+def getInstrumentSetup():
+    pList = p.GetInstrumentInfoFromDB()
+    return {"pList": pList}
 
 
 # 获取报文设置信息
@@ -115,6 +123,44 @@ def updateDevice():
     return {"message": "更新成功"}
 
 
+# 跟新仪器配置信息
+@app.route('/updateInstrument', methods=['POST'])
+def updateInstrument():
+    try:
+        data = json.loads(request.data.decode())
+        txtInstrumentNo = data["InstrumentNo"]
+        txtInstrumentID = data["InstrumentID"]
+        txtInstrumentName = data["InstrumentName"]
+        txtInstrumentSerialNo = data["InstrumentSerialNo"]
+        txtInstrumentDesc = data["InstrumentDesc"]
+        txtInstrumentLocation = data["InstrumentLocation"]
+        txtHighConcentrationID = data["HighConcentrationID"]
+        txtMidConcentrationID = data["MidConcentrationID"]
+        txtLowConcentrationID = data["LowConcentrationID"]
+        txtProtocolID = data["ProtocolID"]
+        nProtocolID = int(txtProtocolID)
+        txtBaudRate = data["BaudRate"]
+        nBaudRate = int(txtBaudRate)
+        txtPortName = data["PortName"]
+        txtIsActive = data["IsActive"]
+        if txtIsActive:
+            nIsActive = 1
+        else:
+            nIsActive = 0
+        if p.UpdateInstrumentInfoToDB(txtInstrumentNo, txtInstrumentID, txtInstrumentName, txtInstrumentSerialNo,
+                                      txtInstrumentDesc, txtInstrumentLocation, txtHighConcentrationID,
+                                      txtMidConcentrationID, txtLowConcentrationID, nProtocolID, nBaudRate,
+                                      txtPortName, nIsActive):
+            print('Update instrument info successfully')
+        else:
+            print("Update instrument info failed")
+            return {"message": "更新失败"}
+    except BaseException as e:
+        print("Update instrument information failed")
+        return {"message": "更新失败"}
+    return {"message": "更新成功"}
+
+
 # 跟新报文配置信息
 @app.route('/updateProtocol', methods=['POST'])
 def updateProtocol():
@@ -160,7 +206,7 @@ def updataMessage():
 
 # 跟新Field
 @app.route('/updateField', methods=['POST'])
-def updataField():
+def updateField():
     try:
         data = json.loads(request.data.decode())
         txtFieldID = int(data["FieldID"])
@@ -182,6 +228,38 @@ def updataField():
         print("ProtocolUpdate with exception {}".format(e))
         return {"message": "更新失败"}
     return {"message": "更新成功"}
+
+
+# 创建一个新的仪器配置信息
+@app.route('/createInstrument', methods=['POST'])
+def createInstrument():
+    try:
+        data = json.loads(request.data.decode())
+        txtInstrumentID = data["InstrumentID"]
+        txtInstrumentName = data["InstrumentName"]
+        txtInstrumentSerialNo = data["InstrumentSerialNo"]
+        txtInstrumentDesc = data["InstrumentDesc"]
+        txtInstrumentLocation = data["InstrumentLocation"]
+        txtHighConcentrationID = data["HighConcentrationID"]
+        txtMidConcentrationID = data["MidConcentrationID"]
+        txtLowConcentrationID = data["LowConcentrationID"]
+        txtProtocolID = data["ProtocolID"]
+        nProtocolID = int(txtProtocolID)
+        txtBaudRate = data["BaudRate"]
+        nBaudRate = int(txtBaudRate)
+        txtPortName = data["PortName"]
+        txtIsActive = data["IsActive"]
+        if txtIsActive:
+            nIsActive = 1
+        else:
+            nIsActive = 0
+        p.SaveInstrumentInfo(txtInstrumentID, txtInstrumentName, txtInstrumentSerialNo, txtInstrumentDesc,
+                             txtInstrumentLocation, txtHighConcentrationID, txtMidConcentrationID, txtLowConcentrationID,
+                             nProtocolID, nBaudRate, txtPortName, nIsActive)
+    except BaseException as e:
+        print("InstrumentCreate with exception {}".format(e))
+        return {"message": "创建失败"}
+    return {"message": "创建成功"}
 
 
 # 创建一个新的报文配置信息
@@ -250,6 +328,20 @@ def createField():
         print("ProtocolUpdate with exception {}".format(e))
         return {"message": "更新失败"}
     return {"message": "更新成功"}
+
+
+# 删除设备配置信息
+@app.route('/deleteInstrument', methods=['POST'])
+def deleteInstrument():
+    try:
+        data = json.loads(request.data.decode())
+        txtInstrumentNo = data["InstrumentNo"]
+        nInstrumentNo = int(txtInstrumentNo)
+        p.DeleteInstrumentInfo(nInstrumentNo)
+    except BaseException as e:
+        print("InstrumentDelete with exception {}".format(e))
+        return {"message": "删除失败"}
+    return {"message": "删除成功"}
 
 
 # 删除报文配置信息
